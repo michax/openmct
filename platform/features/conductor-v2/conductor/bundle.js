@@ -53,7 +53,8 @@ define([
                     "key": "timeConductorViewService",
                     "implementation": TimeConductorViewService,
                     "depends": [
-                        "timeConductor"
+                        "timeConductor",
+                        "timeSystems[]"
                     ]
                 }
             ],
