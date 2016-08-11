@@ -34,13 +34,13 @@ define(
          *        the service which exposes the global time conductor
          * @param {TelemetryService} telemetryService the decorated service
          */
-        function ConductorTelemetryDecorator(conductorService, telemetryService) {
-            this.conductorService = conductorService;
+        function ConductorTelemetryDecorator(timeConductor, telemetryService) {
+            this.timeConductor = timeConductor;
             this.telemetryService = telemetryService;
         }
 
         ConductorTelemetryDecorator.prototype.amendRequests = function (requests) {
-            var conductor = this.conductorService.getConductor(),
+            var conductor = this.timeConductor,
                 start = conductor.displayStart(),
                 end = conductor.displayEnd(),
                 domain = conductor.domain();

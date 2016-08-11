@@ -32,9 +32,7 @@ define(
          * labelled 'ticks'. It requires 'start' and 'end' integer values to
          * be specified as attributes.
          */
-        function MCTConductorAxis(conductorService, formatService) {
-            var conductor = conductorService.conductor();
-
+        function MCTConductorAxis(conductor, formatService) {
             function link(scope, element, attrs, ngModelController) {
                 var target = element[0].firstChild,
                     height = target.offsetHeight,

@@ -21,25 +21,21 @@
  *****************************************************************************/
 
 define(
-    ['../TimeConductor'],
-    function (TimeConductor) {
+    [],
+    function () {
 
-        function TimeConductorService() {
-            this._conductor = new TimeConductor();
+        function TimeConductorViewService(conductor) {
+            this._conductor = conductor;
             this._mode = undefined;
         }
 
-        TimeConductorService.prototype.mode = function (mode) {
+        TimeConductorViewService.prototype.mode = function (mode) {
             if (arguments.length === 1) {
                 this._mode = mode;
             }
             return this._mode;
         };
 
-        TimeConductorService.prototype.conductor = function () {
-            return this._conductor;
-        };
-
-        return TimeConductorService;
+        return TimeConductorViewService;
     }
 );

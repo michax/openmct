@@ -33,8 +33,8 @@ define(
          * the mode relevant, with both offsets defined relative to it.
          * @constructor
          */
-        function FollowMode(conductor, timeSystem, key) {
-            TimeConductorMode.call(this, conductor, timeSystem, key);
+        function FollowMode(key, conductor, availableTimeSystems) {
+            TimeConductorMode.call(this, key, conductor, availableTimeSystems);
 
             this._deltas = undefined;
             this._tickSource = undefined;
@@ -44,7 +44,6 @@ define(
         FollowMode.prototype = Object.create(TimeConductorMode.prototype);
 
         FollowMode.prototype.initialize = function () {
-            TimeConductorMode.prototype.initialize.apply(this);
             this.conductor.follow(true);
         };
 
@@ -83,28 +82,24 @@ define(
          * @param timeSystem
          * @returns {TimeSystem}
          */
-        FollowMode.prototype.timeSystem = function (timeSystem) {
-            TimeConductorMode.prototype.timeSystem.apply(this, arguments);
+        FollowMode.prototype.changeTimeSystem = function (timeSystem) {
+            TimeConductorMode.prototype.changeTimeSystem.apply(this, arguments);
 
-            if (timeSystem) {
+            if (arguments.length > 0) {
                 var defaults = this.defaults();
+                var bounds = {
+                    start: defaults.bounds.start,
+                    end: defaults.bounds.end
+                };
 
-                if (arguments.length > 0) {
-                    var bounds = {
-                        start: defaults.bounds.start,
-                        end: defaults.bounds.end
-                    };
-
-                    if (defaults.deltas) {
-                        bounds.start = bounds.end - defaults.deltas.start;
-                        bounds.end = bounds.end + defaults.deltas.end;
-                        this._deltas = JSON.parse(JSON.stringify(defaults.deltas));
-                    }
-
-                    this.conductor.timeSystem(timeSystem, bounds);
+                if (defaults.deltas) {
+                    bounds.start = bounds.end - defaults.deltas.start;
+                    bounds.end = bounds.end + defaults.deltas.end;
+                    this._deltas = JSON.parse(JSON.stringify(defaults.deltas));
                 }
+
+                this.conductor.timeSystem(timeSystem, bounds);
             }
-            return this._timeSystem;
         };
 
         /**

@@ -33,9 +33,9 @@ define(
          * @constructor
          * @param {TimeConductorMetadata} metadata
          */
-        function TimeConductorMode(conductor, timeSystem, key) {
+        function TimeConductorMode(key, conductor, availableTimeSystems) {
             this.conductor = conductor;
-            this._timeSystem = timeSystem;
+            this._availableTimeSystems = availableTimeSystems;
             this._key = key;
         }
 
@@ -43,7 +43,6 @@ define(
          * Function is called when mode becomes active (ie. is selected)
          */
         TimeConductorMode.prototype.initialize = function () {
-            this.timeSystem(this._timeSystem);
         };
 
         /**
@@ -51,11 +50,11 @@ define(
          * @param timeSystem
          * @returns {TimeSystem} the currently selected time system
          */
-        TimeConductorMode.prototype.timeSystem = function (timeSystem) {
-            if (arguments.length > 0) {
-                this._timeSystem = timeSystem;
-            }
-            return this._timeSystem;
+        TimeConductorMode.prototype.changeTimeSystem = function (timeSystem) {
+        };
+
+        TimeConductorMode.prototype.availableTimeSystems = function (timeSystem) {
+            return this._availableTimeSystems;
         };
 
         TimeConductorMode.prototype.key = function () {
@@ -63,11 +62,13 @@ define(
         };
 
         TimeConductorMode.prototype.defaults = function () {
-            var timeSystem = this.timeSystem(),
+            var timeSystem = this.conductor.timeSystem(),
                 key = this.key();
 
             if (timeSystem) {
                 return timeSystem.defaults(key);
+            } else {
+                return {bounds: {start: 0, end: 0}};
             }
         };
 
